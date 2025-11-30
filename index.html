@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Muneeb!</title>
+    <!-- Importing a Retro Pixel Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- CSS VARIABLES FOR EASY COLOR EDITING --- */
+        :root {
+            --bg-color: #1a0b2e;
+            --neon-pink: #ff2a6d;
+            --neon-blue: #05d9e8;
+            --neon-yellow: #f9c80e;
+            --text-color: #d1f7ff;
+            --card-bg: #2b1542;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Press Start 2P', cursive;
+            overflow: hidden; /* Prevents scrollbars during animation */
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        /* --- CRT SCREEN EFFECT (The "Old Vibe") --- */
+        .crt-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none; /* Allows clicking through */
+            z-index: 999;
+            animation: flicker 0.15s infinite;
+        }
+
+        @keyframes flicker {
+            0% { opacity: 0.9; }
+            100% { opacity: 1; }
+        }
+
+        /* --- START SCREEN --- */
+        #start-screen {
+            position: absolute;
+            z-index: 100;
+            text-align: center;
+            cursor: pointer;
+            padding: 20px;
+            border: 4px dashed var(--neon-pink);
+            background: rgba(0,0,0,0.8);
+            animation: pulse 1s infinite;
+        }
+
+        #start-screen h2 {
+            color: var(--neon-yellow);
+            text-shadow: 4px 4px var(--neon-pink);
+            line-height: 1.5;
+        }
+
+        /* --- MAIN CARD --- */
+        .card {
+            background: var(--card-bg);
+            border: 4px solid var(--neon-blue);
+            box-shadow: 10px 10px 0px var(--neon-pink);
+            padding: 30px;
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            display: none; /* Hidden until start is clicked */
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        h1 {
+            color: var(--neon-yellow);
+            font-size: 1.5rem;
+            text-shadow: 3px 3px 0px #000;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        /* --- IMAGE STYLING --- */
+        .image-frame {
+            width: 250px;
+            height: 250px;
+            background: #000;
+            border: 4px solid var(--neon-pink);
+            padding: 10px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .image-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: sepia(30%) contrast(120%); /* Adds vintage look to photo */
+        }
+
+        /* --- TEXT & CONTROLS --- */
+        p.message {
+            font-size: 0.8rem;
+            line-height: 1.8;
+            margin-bottom: 30px;
+            color: #fff;
+        }
+
+        .music-control {
+            font-size: 0.7rem;
+            color: var(--neon-blue);
+            margin-top: 10px;
+            border: 2px solid var(--neon-blue);
+            padding: 10px;
+            cursor: pointer;
+            background: transparent;
+            font-family: 'Press Start 2P', cursive;
+        }
+        
+        .music-control:hover {
+            background: var(--neon-blue);
+            color: #000;
+        }
+
+        /* --- PIXEL RAIN ANIMATION --- */
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 600px) {
+            h1 { font-size: 1.1rem; }
+            .image-frame { width: 200px; height: 200px; }
+            p.message { font-size: 0.6rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- RETRO CRT OVERLAY -->
+    <div class="crt-overlay"></div>
+
+    <!-- CANVAS FOR PIXEL CONFETTI -->
+    <canvas id="confetti"></canvas>
+
+    <!-- START SCREEN (Needed for Audio to work) -->
+    <div id="start-screen">
+        <h2>INSERT COIN<br>TO START</h2>
+        <p style="font-size: 0.7rem; margin-top: 20px;">(Click anywhere)</p>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="card" id="main-card">
+        <h1>HAPPY BIRTHDAY<br>JANII!</h1>
+        
+        <div class="image-frame">
+            <!-- 
+                ================================================================
+                USER EDIT: REPLACE THE SRC URL BELOW WITH YOUR FRIEND'S PHOTO
+                You can use a direct link to an image (ending in .jpg, .png).
+                ================================================================
+            -->
+            <img src="muneeb.jpeg" alt="Muneeb" id="friend-img">
+        </div>
+
+        <p class="message">
+            LEVEL UP!<br><br>
+            Wishing you another year of high scores and great adventures. Have a legendary day!
+        </p>
+
+        <!-- 
+            ================================================================
+            USER EDIT: REPLACE THE SRC URL BELOW WITH YOUR SONG LINK
+            Note: It must be a direct link to an MP3 file.
+            ================================================================
+        -->
+        <audio id="bg-music" loop>
+            <!-- Using a royalty-free retro track placeholder -->
+            <source src="muneeb.m4a" type="audio/mpeg">
+        </audio>
+
+        <button class="music-control" onclick="toggleMusic()">II PAUSE MUSIC</button>
+    </div>
+
+    <script>
+        // --- LOGIC TO HANDLE STARTUP AND MUSIC ---
+        const startScreen = document.getElementById('start-screen');
+        const mainCard = document.getElementById('main-card');
+        const audio = document.getElementById('bg-music');
+        const musicBtn = document.querySelector('.music-control');
+        let isPlaying = false;
+
+        startScreen.addEventListener('click', () => {
+            startScreen.style.display = 'none';
+            mainCard.style.display = 'flex';
+            
+            // Try to play audio
+            audio.volume = 0.5; // Set volume to 50%
+            audio.play().then(() => {
+                isPlaying = true;
+            }).catch(e => {
+                console.log("Audio autoplay prevented. User must interact.", e);
+                musicBtn.innerText = "▶ PLAY MUSIC";
+            });
+            
+            // Start the confetti
+            initConfetti();
+        });
+
+        function toggleMusic() {
+            if (isPlaying) {
+                audio.pause();
+                musicBtn.innerText = "▶ PLAY MUSIC";
+                isPlaying = false;
+            } else {
+                audio.play();
+                musicBtn.innerText = "II PAUSE MUSIC";
+                isPlaying = true;
+            }
+        }
+
+        // --- RETRO PIXEL CONFETTI ---
+        const canvas = document.getElementById('confetti');
+        const ctx = canvas.getContext('2d');
+        let width = window.innerWidth;
+        let height = window.innerHeight;
+        canvas.width = width;
+        canvas.height = height;
+
+        const pixels = [];
+        const colors = ['#ff2a6d', '#05d9e8', '#f9c80e', '#ffffff'];
+
+        class Pixel {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height - height;
+                this.size = Math.random() * 10 + 5; // Pixel size
+                this.speed = Math.random() * 3 + 2;
+                this.color = colors[Math.floor(Math.random() * colors.length)];
+            }
+
+            update() {
+                this.y += this.speed;
+                if (this.y > height) {
+                    this.y = -this.size;
+                    this.x = Math.random() * width;
+                }
+            }
+
+            draw() {
+                ctx.fillStyle = this.color;
+                // Drawing squares for retro feel
+                ctx.fillRect(this.x, this.y, this.size, this.size); 
+            }
+        }
+
+        function initConfetti() {
+            for (let i = 0; i < 100; i++) {
+                pixels.push(new Pixel());
+            }
+            animate();
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            pixels.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animate);
+        }
+
+        // Handle Resize
+        window.addEventListener('resize', () => {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+        });
+
+    </script>
+</body>
+</html>
